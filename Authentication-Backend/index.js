@@ -1,10 +1,10 @@
 const express = require('express');
+const dotenv = require('dotenv').config()
 const app = express();
 const PORT = 3000;
 
-app.get('/',(req,res)=>{
-    res.send('Authentication Backend is running');
-})
+
+app.use('/',require('./routes/authRoutes.js'))
 
 app.listen(PORT,()=>{
     console.log(`Authentication Backend is running on port ${PORT}`);
