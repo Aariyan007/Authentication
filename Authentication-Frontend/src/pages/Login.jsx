@@ -10,11 +10,14 @@ const Login = () => {
   
   const login = (e) =>{
     e.preventDefault();
+    axios.get('/')
   }
 
   return (
     <div className='flex items-center justify-center h-screen bg-slate-600'>
-      <form className="mx-auto bg-black p-8 w-1/2 rounded-lg shadow-md">
+      <form
+      onSubmit={login}
+      className="mx-auto bg-black p-8 w-1/2 rounded-lg shadow-md">
         <div className="mb-5">
           <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
           <input
