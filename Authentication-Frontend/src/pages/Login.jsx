@@ -1,34 +1,55 @@
 import React from 'react'
 import { useState } from 'react';
+import axios from 'axios'
+import { toast } from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
-  const [data,setData] = useState({
-    email : '',
-    password : '',
+  const navigate = useNavigate();
+
+  const [data, setData] = useState({
+    email: '',
+    password: '',
   })
-  
-  const login = (e) =>{
+
+  const login = async (e) => {
     e.preventDefault();
-    axios.get('/')
+    const { email, password } = data;
+    try {
+      const { data } = await axios.post('/login', {
+        email, password
+      });
+      if (data.error) {
+        toast.error(data.error);
+      }
+      else {
+        setData({});
+        navigate('/');
+      }
+    }
+    catch (err) {
+      toast.error("Login failed. Please try again."); // add some error handling
+      console.error(err);
+    }
   }
 
   return (
     <div className='flex items-center justify-center h-screen bg-slate-600'>
       <form
-      onSubmit={login}
-      className="mx-auto bg-black p-8 w-1/2 rounded-lg shadow-md">
+        onSubmit={login}
+        className="mx-auto bg-black p-8 w-1/2 rounded-lg shadow-md">
         <div className="mb-5">
           <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
           <input
-          value={data.email} onChange={(e) => setData({...data,email:e.target.value})}
-          type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required />
+            value={data.email} onChange={(e) => setData({ ...data, email: e.target.value })}
+            type="email" id="email" name="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required />
         </div>
         <div className="mb-5">
           <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
           <input
-          value = {data.password} onChange={(e)=>setData({...data,password:e.target.value})}
-          type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+            value={data.password} onChange={(e) => setData({ ...data, password: e.target.value })}
+            type="password" id="password" name="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
         </div>
         <div className="flex items-start mb-5">
           <div className="flex items-center gap-2 mb-5">
